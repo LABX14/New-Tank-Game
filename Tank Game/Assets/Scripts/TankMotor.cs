@@ -7,6 +7,7 @@ public class TankMotor : MonoBehaviour
 
     // Variables
     private Rigidbody rigidbody;
+    private TankData data;
 
     #region Private Methods
     // Start is called before the first frame update
@@ -14,15 +15,12 @@ public class TankMotor : MonoBehaviour
     {
         // Get components.
         rigidbody = GetComponent<Rigidbody>();
-
+        data = GetComponent<TankData>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Debug movement, W for forward S for backward
-        if (Input.GetKey(KeyCode.W)) Move(5);
-        if (Input.GetKey(KeyCode.S)) Move(-5);
     }
     #endregion
 
@@ -37,10 +35,38 @@ public class TankMotor : MonoBehaviour
         movementVector = transform.forward;
 
         // Apply the speed to the forward direction.
-        movementVector = movementVector * speed;
+        movementVector *= speed;
 
         // Move the tank forwards
         rigidbody.MovePosition(rigidbody.position + (movementVector * Time.deltaTime));
+    }
+
+    public void Turn(float speed) 
+    {
+        // The tanks rotation data.
+        Vector3 rotationVector;
+
+        // Get the direction facing infront of the tank.
+        rotationVector = Vector3.up;
+
+        // Apply the speed to the forward direction.
+        rotationVector *= speed * Time.deltaTime;
+
+        // Turn the tank.
+        transform.Rotate(rotationVector, Space.Self);
+    }
+
+    public void Shoot(GameObject bulletPrefab, Transform bulletTransform, float speed) 
+    {
+        // The projectile we are shooting.
+        Rigidbody bullet;
+
+        // Create the projectile
+        bullet = Instantiate(bulletPrefab, bulletTransform.position, bulletTransform.rotation).GetComponent<Rigidbody>();
+
+        // Launch projectile.
+        bullet.velocity = transform.forward * speed*Time.deltaTime;
+
     }
     #endregion
 }
