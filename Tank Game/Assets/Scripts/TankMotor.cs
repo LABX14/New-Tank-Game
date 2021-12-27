@@ -2,32 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class TankMotor : MonoBehaviour
 {
 
     // Variables
+    private CharacterController characterController;
     private Rigidbody rigidbody;
     private TankData data;
+    private Transform movement;
 
-    #region Private Methods
     // Start is called before the first frame update
     void Start()
     {
         // Get components.
         rigidbody = GetComponent<Rigidbody>();
+        // characterController = GetComponent<CharacterController>();
         data = GetComponent<TankData>();
     }
 
     // Update is called once per frame
     void Update()
     {
-    }
-    #endregion
 
-    #region Public Methods
+    }
+ 
+
+
     // Moves the tank forward and backwards.
     public void Move(float speed)
     {
+
         // The tanks movement data.
         Vector3 movementVector;
 
@@ -39,6 +44,10 @@ public class TankMotor : MonoBehaviour
 
         // Move the tank forwards
         rigidbody.MovePosition(rigidbody.position + (movementVector * Time.deltaTime));
+
+        // Test code to move forward 
+        //characterController.SimpleMove(movement.forward * speed);
+
     }
 
     public void Turn(float speed) 
@@ -55,7 +64,8 @@ public class TankMotor : MonoBehaviour
         // Turn the tank.
         transform.Rotate(rotationVector, Space.Self);
     }
-
+    
+    // This controls the shoot function
     public void Shoot(GameObject bulletPrefab, Transform bulletTransform, float speed) 
     {
         // The projectile we are shooting.
@@ -68,5 +78,4 @@ public class TankMotor : MonoBehaviour
         bullet.velocity = transform.forward * speed*Time.deltaTime;
 
     }
-    #endregion
 }
