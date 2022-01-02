@@ -35,7 +35,7 @@ public class TankShooter : MonoBehaviour
         bullet = Instantiate(bulletPrefab, bulletTransform.position, bulletTransform.rotation);
 
         // Set Bullets shooter.
-        bullet.GetComponent<Bullet>().myShooter = gameObject;
+        bullet.GetComponent<Bullet>().myShooter = GetComponent<TankData>();
 
         // Launch projectile.
         bullet.GetComponent<Rigidbody>().velocity = transform.forward * speed * Time.deltaTime;

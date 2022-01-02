@@ -16,6 +16,7 @@ public class InputController : MonoBehaviour
     // The Tank Motor component.
     private TankMotor motor;
 
+    // The Tank Shooter component.
     private TankShooter shooter;
 
     // The Tank Data component.

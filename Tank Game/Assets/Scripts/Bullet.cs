@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour
     
     // The tank that shot the bullet.
     [HideInInspector]
-    public GameObject myShooter;
+    public TankData myShooter;
 
     // Update is called once per frame
     void Update()
@@ -33,13 +33,13 @@ public class Bullet : MonoBehaviour
         GameObject otherObject = collision.collider.gameObject;
 
         // Avoid collision with the object that shot the bullet.
-        if (otherObject == myShooter) { return; }
+        if (otherObject == myShooter.gameObject) { return; }
 
         TankHealth otherHealth = collision.collider.GetComponent<TankHealth>();
 
         if (otherHealth)
         {
-            otherHealth.TakeDamage(myShooter.GetComponent<TankData>().bulletDamage);
+            otherHealth.TakeDamage(myShooter);
         }
         // Destroy the bullet on collision with another object.
         Destroy(gameObject);

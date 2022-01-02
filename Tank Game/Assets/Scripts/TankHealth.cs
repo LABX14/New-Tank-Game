@@ -23,11 +23,15 @@ public class TankHealth : MonoBehaviour
         UpdateSlider();
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(TankData hitBy)
     {
-        currentHealth -= damage;
+        currentHealth -= hitBy.bulletDamage;
         UpdateSlider();
-        if (currentHealth <= 0) { Die(); }
+        if (currentHealth <= 0) 
+        {
+            hitBy.score += GetComponent<TankData>().tankPointValue;
+            Die(); 
+        }
     }
 
     public void HealDamage(float damage)

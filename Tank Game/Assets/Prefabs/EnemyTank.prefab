@@ -1682,11 +1682,11 @@ GameObject:
   - component: {fileID: 7039505201208053057}
   - component: {fileID: 7039505201208053066}
   - component: {fileID: 7039505201208053067}
-  - component: {fileID: 7039505201208053064}
   - component: {fileID: 2166206255878556807}
   - component: {fileID: 3325593036067744171}
+  - component: {fileID: 3912958630879609559}
   m_Layer: 0
-  m_Name: Tank
+  m_Name: EnemyTank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1818,20 +1818,9 @@ MonoBehaviour:
   bulletTransform: {fileID: 2173972556380187416}
   tankHP: 3
   bulletDamage: 1
+  tankPointValue: 1
+  score: 0
   fireRate: 1
---- !u!114 &7039505201208053064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7039505201208053056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c016dc73c760ca5448fedfc641a72011, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  input: 0
 --- !u!114 &2166206255878556807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1854,5 +1843,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a603c1ab99b580348acebe5464f3d9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3912958630879609559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7039505201208053056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd575104280e51c449adf8250d7389bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

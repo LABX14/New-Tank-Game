@@ -22,6 +22,10 @@ public class TankData : MonoBehaviour
 
     public float bulletDamage = 1;
 
+    public int tankPointValue = 1;
+
+    public int score = 0;
+
     // Time till next shot can be fired in seconds.
     public float fireRate = 1;
 }
