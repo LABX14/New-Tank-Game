@@ -1687,7 +1687,7 @@ GameObject:
   - component: {fileID: 3325593036067744171}
   m_Layer: 0
   m_Name: PlayerTank
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1813,12 +1813,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   turnSpeed: 180
-  bulletSpeed: 1000
+  bulletSpeed: 10
   bulletPrefab: {fileID: 6765047819495575865, guid: ce61119c92cbe2547a7ac9279d3b6309, type: 3}
   bulletTransform: {fileID: 2173972556380187416}
-  tankHP: 3
   bulletDamage: 1
   fireRate: 1
+  tankHP: 3
+  tankPointValue: 1
+  score: 0
 --- !u!114 &7039505201208053064
 MonoBehaviour:
   m_ObjectHideFlags: 0

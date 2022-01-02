@@ -25,6 +25,7 @@ public class TankShooter : MonoBehaviour
     // This controls the shoot function
     public void Shoot(GameObject bulletPrefab, Transform bulletTransform, float speed, float fireRate)
     {
+        Debug.Log("Shooting");
         // Check if the tank is able to shoot.
         if (!canShoot) return;
 
@@ -33,6 +34,7 @@ public class TankShooter : MonoBehaviour
 
         // Create the projectile
         bullet = Instantiate(bulletPrefab, bulletTransform.position, bulletTransform.rotation);
+        Debug.Log(bullet.name);
 
         // Set Bullets shooter.
         bullet.GetComponent<Bullet>().myShooter = GetComponent<TankData>();

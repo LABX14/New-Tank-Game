@@ -32,6 +32,7 @@ public class Bullet : MonoBehaviour
     {
         GameObject otherObject = collision.collider.gameObject;
 
+        Debug.Log(otherObject + " : " + myShooter.gameObject);
         // Avoid collision with the object that shot the bullet.
         if (otherObject == myShooter.gameObject) { return; }
 

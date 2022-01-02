@@ -1816,11 +1816,11 @@ MonoBehaviour:
   bulletSpeed: 1000
   bulletPrefab: {fileID: 6765047819495575865, guid: ce61119c92cbe2547a7ac9279d3b6309, type: 3}
   bulletTransform: {fileID: 2173972556380187416}
-  tankHP: 3
   bulletDamage: 1
+  fireRate: 1
+  tankHP: 3
   tankPointValue: 1
   score: 0
-  fireRate: 1
 --- !u!114 &2166206255878556807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1857,3 +1857,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd575104280e51c449adf8250d7389bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waypoints: []
+  closeEnough: 1
