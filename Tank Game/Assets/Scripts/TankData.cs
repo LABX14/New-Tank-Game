@@ -17,4 +17,11 @@ public class TankData : MonoBehaviour
     public GameObject bulletPrefab;
 
     public Transform bulletTransform;
+
+    public float tankHP = 3;
+
+    public float bulletDamage = 1;
+
+    // Time till next shot can be fired in seconds.
+    public float fireRate = 1;
 }

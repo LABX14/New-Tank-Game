@@ -4,31 +4,44 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    // Variables 
+    // Variables
 
-    // This will determine the speed of the bullet
-    public float bulletSpeed;
+    // The time till the bullet despawns.
+    [SerializeField]
+    private float despawnTime = 5;
+    
+    // The tank that shot the bullet.
+    [HideInInspector]
     public GameObject myShooter;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position += transform.forward * bulletSpeed * Time.deltaTime;
+        // Check if our bullets current time has exceeded the despawn time.
+        if(despawnTime <= 0)
+        {
+            // If it has, destroy the bullet.
+            Destroy(gameObject);
+        }
+        // Count up the time the bullet has been alive.
+        despawnTime -= Time.deltaTime;
     }
 
     // If the object with this script touches object as tagged as enemy ship then destroy itself
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision collision)
     {
-        if (other.GetComponent<TankData>())
+        GameObject otherObject = collision.collider.gameObject;
+
+        // Avoid collision with the object that shot the bullet.
+        if (otherObject == myShooter) { return; }
+
+        TankHealth otherHealth = collision.collider.GetComponent<TankHealth>();
+
+        if (otherHealth)
         {
-            Destroy(gameObject);
+            otherHealth.TakeDamage(myShooter.GetComponent<TankData>().bulletDamage);
         }
+        // Destroy the bullet on collision with another object.
+        Destroy(gameObject);
     }
 }

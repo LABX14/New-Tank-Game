@@ -1,0 +1,61 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class TankHealth : MonoBehaviour
+{
+    // Variables
+    private float currentHealth;
+    private float maxHealth;
+    private Image healthImage;
+
+    private Slider healthSlider; 
+  
+    // Start is called before the first frame update
+    void Start()
+    {
+        maxHealth = GetComponent<TankData>().tankHP;
+        currentHealth = maxHealth;
+        healthSlider = GetComponentInChildren<Slider>();
+        healthSlider.maxValue = maxHealth;
+        healthImage = healthSlider.fillRect.GetComponent<Image>();
+        UpdateSlider();
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        UpdateSlider();
+        if (currentHealth <= 0) { Die(); }
+    }
+
+    public void HealDamage(float damage)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + damage, 0, maxHealth);
+        UpdateSlider();
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
+
+    private void UpdateSlider()
+    {
+        healthSlider.value = currentHealth;
+        Debug.Log(currentHealth + " : " + maxHealth * (2f / 3f));
+        if(currentHealth > maxHealth * (2f / 3f))
+        {
+            healthImage.color = Color.green;
+        }
+        else if (currentHealth > maxHealth * (1f / 3f))
+        {
+            healthImage.color = Color.yellow;
+        }
+        else
+        {
+            healthImage.color = Color.red;
+        }
+    }
+}

@@ -16,6 +16,8 @@ public class InputController : MonoBehaviour
     // The Tank Motor component.
     private TankMotor motor;
 
+    private TankShooter shooter;
+
     // The Tank Data component.
     private TankData data;
 
@@ -23,7 +25,10 @@ public class InputController : MonoBehaviour
     {
         // Get components.
         motor = GetComponent<TankMotor>();
+        shooter = GetComponent<TankShooter>();
         data = GetComponent<TankData>();
+
+        GameManager.instance.players.Add(data);
     }
 
     // Update is called once per frame
@@ -50,7 +55,7 @@ public class InputController : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.Keypad0))
                 {
-                    motor.Shoot(data.bulletPrefab, data.bulletTransform, data.bulletSpeed);
+                    shooter.Shoot(data.bulletPrefab, data.bulletTransform, data.bulletSpeed, data.fireRate);
                 }
                 break;
             case InputScheme.WASD:
@@ -72,7 +77,7 @@ public class InputController : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    motor.Shoot(data.bulletPrefab, data.bulletTransform, data.bulletSpeed);
+                    shooter.Shoot(data.bulletPrefab, data.bulletTransform, data.bulletSpeed, data.fireRate);
                 }
                 break;
         }

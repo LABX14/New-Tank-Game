@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     // This will apply these variables to a list 
     public List<TankData> enemyTanks;
-    public List<InputController> players;
+    public List<TankData> players;
 
     void Awake()
     {
