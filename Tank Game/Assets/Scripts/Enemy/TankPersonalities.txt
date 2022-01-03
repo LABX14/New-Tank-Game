@@ -1,0 +1,9 @@
+Tank Personalities:
+
+	Gold Tank (Fleeing): Is faster than other tanks, worth more points, and always flees from the player after seeing or hearing them. Heals fast after fleeing from the player.
+
+	Blue Tank (Patrolling): Pingpongs between patrol points. If it hears or sees the player while navigating patrol points it will enter chase mode. Re-enters patrol mode after losing sight of the player.
+
+	Green Tank (Hunting): Always knows where the player is, but moves slowly. Chases the player, and only shoots on sight.
+
+	Red Tank (Wandering): Follows waypoints throughout the world. Fires straight forward if they can hear or see the player.

@@ -20,22 +20,31 @@ public class AIController : MonoBehaviour
     // The Tank Health component.
     private TankHealth health;
 
+    public enum AIPersonality { Fleeing, Patrolling, Hunting, Wandering};
+    public AIPersonality personality = AIPersonality.Hunting;
+
     [Header("Obstacle Avoidance Settings")]
     public float avoidanceTime = 2.0f;
     private int avoidanceStage = 0;
     private float exitTime;
 
-
     [Header("Chase and Flee Settings")]
     public Transform target;
     public float fleeDistance = 1.0f;
+    public float chaseTime = 10f;
     public float fleeTime = 30f;
+
+    [Header("Waypoint Settings")]
+    public Transform[] waypoints;
+    private int currentWaypoint = 0;
+    public float closeEnough = 1.0f;
+    private bool isPatrolForward = true;
 
     [Header("State Machine and Senses Settings")]
     public float fieldOfView = 45.0f;
     public float hearingRadius = 5f;
     public float stateEnterTime;
-    public enum AIState { Chase, ChaseAndFire, CheckForFlee, Flee, Rest };
+    public enum AIState { Chase, ChaseAndFire, CheckForFlee, Flee, Default };
     public AIState aiState = AIState.Chase;
     public float restingHealRate;
 
@@ -49,102 +58,272 @@ public class AIController : MonoBehaviour
         health = GetComponent<TankHealth>();
 
         GameManager.instance.enemyTanks.Add(data);
+
+        target = GameManager.instance.players[0].transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (aiState == AIState.Chase)
+        switch (personality)
         {
-            // Perform Behaviors
-            if (avoidanceStage != 0)
-            {
-                DoAvoidance();
-            }
-            else
-            {
-                DoChase();
-            }
+            case AIPersonality.Fleeing:
+                if (aiState == AIState.Flee)
+                {
+                    // Perform Behaviors
+                    if (avoidanceStage != 0)
+                    {
+                        DoAvoidance();
+                    }
+                    else
+                    {
+                        DoFlee();
+                    }
 
-            // Check for Transitions
-            if (health.GetCurrentHP() < data.tankHP * 0.5f)
-            {
-                ChangeState(AIState.CheckForFlee);
-            }
-            else if (CanSee(target.gameObject))
-            {
-                ChangeState(AIState.ChaseAndFire);
-            }
-        }
-        else if (aiState == AIState.ChaseAndFire)
-        {
-            // Perform Behaviors
-            if (avoidanceStage != 0)
-            {
-                DoAvoidance();
-            }
-            else
-            {
-                DoChase();
-                shooter.Shoot(data.bulletPrefab, data.bulletTransform, data.bulletSpeed, data.fireRate);
-            }
-            // Check for Transitions
-            if (health.GetCurrentHP() < data.tankHP * 0.5f)
-            {
-                ChangeState(AIState.CheckForFlee);
-            }
-            else if (!CanSee(target.gameObject) && CanHear(target.gameObject))
-            {
-                ChangeState(AIState.Chase);
-            }
-        }
-        else if (aiState == AIState.Flee)
-        {
-            // Perform Behaviors
-            if (avoidanceStage != 0)
-            {
-                DoAvoidance();
-            }
-            else
-            {
-                DoFlee();
-            }
+                    // Check for Transitions
+                    if (Time.time >= stateEnterTime + fleeTime)
+                    {
+                        ChangeState(AIState.CheckForFlee);
+                    }
+                }
+                else if (aiState == AIState.CheckForFlee)
+                {
+                    // Perform Behaviors
+                    CheckForFlee();
 
-            // Check for Transitions
-            if (Time.time >= stateEnterTime + fleeTime)
-            {
-                ChangeState(AIState.CheckForFlee);
-            }
-        }
-        else if (aiState == AIState.CheckForFlee)
-        {
-            // Perform Behaviors
-            CheckForFlee();
+                    // Check for Transitions
+                    if (CanHear(target.gameObject) || CanSee(target.gameObject))
+                    {
+                        ChangeState(AIState.Flee);
+                    }
+                    else
+                    {
+                        ChangeState(AIState.Default);
+                    }
+                }
+                else if (aiState == AIState.Default)
+                {
+                    // Perform Behaviors
+                    DoRest();
 
-            // Check for Transitions
-            if (CanHear(target.gameObject) || CanSee(target.gameObject))
-            {
-                ChangeState(AIState.Flee);
-            }
-            else
-            {
-                ChangeState(AIState.Rest);
-            }
-        }
-        else if (aiState == AIState.Rest)
-        {
-            // Perform Behaviors
-            DoRest();
+                    // Check for Transitions
+                    if (CanHear(target.gameObject) || CanSee(target.gameObject))
+                    {
+                        ChangeState(AIState.Flee);
+                    }
+                }
+                else
+                {
+                    ChangeState(AIState.Default);
+                }
+                break;
 
-            // Check for Transitions
-            if (health.GetCurrentHP() >= data.tankHP && (CanHear(target.gameObject) || CanSee(target.gameObject)))
-            {
-                ChangeState(AIState.Chase);
-            }
-            else if (CanHear(target.gameObject) || CanSee(target.gameObject))
-            {
-                ChangeState(AIState.Flee);
-            }
+            case AIPersonality.Patrolling:
+                if (aiState == AIState.Default)
+                {
+                    // Perform Behaviors
+                    if (avoidanceStage != 0)
+                    {
+                        DoAvoidance();
+                    }
+                    else
+                    {
+                        DoPatrol();
+                    }
+                    // Check for Transitions
+                    if (CanSee(target.gameObject) || CanHear(target.gameObject))
+                    {
+                        ChangeState(AIState.Chase);
+                    }
+                }
+                else if (aiState == AIState.Chase)
+                {
+                    // Perform Behaviors
+                    if (avoidanceStage != 0)
+                    {
+                        DoAvoidance();
+                    }
+                    else
+                    {
+                        DoChase();
+                    }
+
+                    // Check for Transitions
+                    if (Time.time >= stateEnterTime + chaseTime)
+                    {
+                        ChangeState(AIState.Default);
+                    }
+                    else if (CanSee(target.gameObject))
+                    {
+                        ChangeState(AIState.ChaseAndFire);
+                    }
+                }
+                else if (aiState == AIState.ChaseAndFire)
+                {
+                    // Perform Behaviors
+                    if (avoidanceStage != 0)
+                    {
+                        DoAvoidance();
+                    }
+                    else
+                    {
+                        DoChase();
+                        shooter.Shoot(data.bulletPrefab, data.bulletTransform, data.bulletSpeed, data.fireRate);
+                    }
+                    // Check for Transitions
+                    if (Time.time >= stateEnterTime + chaseTime)
+                    {
+                        ChangeState(AIState.Default);
+                    }
+                    else if (!CanSee(target.gameObject) && CanHear(target.gameObject))
+                    {
+                        ChangeState(AIState.Chase);
+                    }
+                }
+                else
+                {
+                    ChangeState(AIState.Default);
+                }
+                break;
+
+            case AIPersonality.Hunting:
+                if (aiState == AIState.Chase)
+                {
+                    // Perform Behaviors
+                    if (avoidanceStage != 0)
+                    {
+                        DoAvoidance();
+                    }
+                    else
+                    {
+                        DoChase();
+                    }
+
+                    // Check for Transitions
+                    if (health.GetCurrentHP() < data.tankHP * 0.5f)
+                    {
+                        ChangeState(AIState.CheckForFlee);
+                    }
+                    else if (CanSee(target.gameObject))
+                    {
+                        ChangeState(AIState.ChaseAndFire);
+                    }
+                }
+                else if (aiState == AIState.ChaseAndFire)
+                {
+                    // Perform Behaviors
+                    if (avoidanceStage != 0)
+                    {
+                        DoAvoidance();
+                    }
+                    else
+                    {
+                        DoChase();
+                        shooter.Shoot(data.bulletPrefab, data.bulletTransform, data.bulletSpeed, data.fireRate);
+                    }
+                    // Check for Transitions
+                    if (health.GetCurrentHP() < data.tankHP * 0.5f)
+                    {
+                        ChangeState(AIState.CheckForFlee);
+                    }
+                    else if (!CanSee(target.gameObject))
+                    {
+                        ChangeState(AIState.Chase);
+                    }
+                }
+                else if (aiState == AIState.Flee)
+                {
+                    // Perform Behaviors
+                    if (avoidanceStage != 0)
+                    {
+                        DoAvoidance();
+                    }
+                    else
+                    {
+                        DoFlee();
+                    }
+
+                    // Check for Transitions
+                    if (Time.time >= stateEnterTime + fleeTime)
+                    {
+                        ChangeState(AIState.CheckForFlee);
+                    }
+                }
+                else if (aiState == AIState.CheckForFlee)
+                {
+                    // Perform Behaviors
+                    CheckForFlee();
+
+                    // Check for Transitions
+                    if (CanHear(target.gameObject) || CanSee(target.gameObject))
+                    {
+                        ChangeState(AIState.Flee);
+                    }
+                    else
+                    {
+                        ChangeState(AIState.Default);
+                    }
+                }
+                else if (aiState == AIState.Default)
+                {
+                    // Perform Behaviors
+                    DoRest();
+
+                    // Check for Transitions
+                    if (health.GetCurrentHP() >= data.tankHP)
+                    {
+                        ChangeState(AIState.Chase);
+                    }
+                    else if (CanHear(target.gameObject) || CanSee(target.gameObject))
+                    {
+                        ChangeState(AIState.Flee);
+                    }
+                }
+                break;
+
+            case AIPersonality.Wandering:
+                if (aiState == AIState.Default)
+                {
+                    // Perform Behaviors
+                    if (avoidanceStage != 0)
+                    {
+                        DoAvoidance();
+                    }
+                    else
+                    {
+                        DoWaypoints();
+                    }
+
+                    // Check for Transitions
+                    if (CanSee(target.gameObject) || CanHear(target.gameObject))
+                    {
+                        ChangeState(AIState.ChaseAndFire);
+                    }
+                }
+                else if (aiState == AIState.ChaseAndFire)
+                {
+                    // Perform Behaviors
+                    if (avoidanceStage != 0)
+                    {
+                        DoAvoidance();
+                    }
+                    else
+                    {
+                        DoWaypoints();
+                    }
+                    shooter.Shoot(data.bulletPrefab, data.bulletTransform, data.bulletSpeed, data.fireRate);
+
+                    // Check for Transitions
+                    if (!CanSee(target.gameObject) && !CanHear(target.gameObject))
+                    {
+                        ChangeState(AIState.Default);
+                    }
+                }
+                else
+                {
+                    ChangeState(AIState.Default);
+                }
+                break;
         }
     }
 
@@ -262,7 +441,107 @@ public class AIController : MonoBehaviour
         //     This gives us a point that is "that vector away" from our current position.
         Vector3 fleePosition = vectorAwayFromTarget + transform.position;
         motor.RotateTowards(fleePosition, data.turnSpeed);
-        motor.Move(data.moveSpeed);
+       
+        if (CanMove(data.moveSpeed))
+        {
+            motor.Move(data.moveSpeed);
+        }
+        else
+        {
+            // Enter obstacle avoidance stage 1
+            avoidanceStage = 1;
+        }
+    }
+
+    void DoPatrol()
+    {
+        // If we are close to the waypoint,
+        if (Vector3.SqrMagnitude(waypoints[currentWaypoint].position - transform.position) < (closeEnough * closeEnough))
+        {
+            if (isPatrolForward)
+            {
+                // Advance to the next waypoint, if we are still in range
+                if (currentWaypoint < waypoints.Length - 1)
+                {
+                    currentWaypoint++;
+                }
+                else
+                {
+                    //Otherwise reverse direction and decrement our current waypoint
+                    isPatrolForward = false;
+                    currentWaypoint--;
+                }
+            }
+            else
+            {
+                // Advance to the next waypoint, if we are still in range
+                if (currentWaypoint > 0)
+                {
+                    currentWaypoint--;
+                }
+                else
+                {
+                    //Otherwise reverse direction and increment our current waypoint
+                    isPatrolForward = true;
+                    currentWaypoint++;
+                }
+            }
+        }
+        else
+        {
+            if (motor.RotateTowards(waypoints[currentWaypoint].position, data.turnSpeed))
+            {
+                // Do nothing!
+            }
+            else
+            {
+                if (CanMove(data.moveSpeed))
+                {
+                    motor.Move(data.moveSpeed);
+                }
+                else
+                {
+                    // Enter obstacle avoidance stage 1
+                    avoidanceStage = 1;
+                }
+            }
+        }
+    }
+
+    void DoWaypoints()
+    {
+        // If we are close to the waypoint,
+        if (Vector3.SqrMagnitude(waypoints[currentWaypoint].position - transform.position) < (closeEnough * closeEnough))
+        {
+            // Advance to the next waypoint, if we are still in range
+            if (currentWaypoint < waypoints.Length - 1)
+            {
+                currentWaypoint++;
+            }
+            else
+            {
+                currentWaypoint = 0;
+            }
+        }
+        else
+        {
+            if (motor.RotateTowards(waypoints[currentWaypoint].position, data.turnSpeed))
+            {
+                // Do nothing!
+            }
+            else
+            {
+                if (CanMove(data.moveSpeed))
+                {
+                    motor.Move(data.moveSpeed);
+                }
+                else
+                {
+                    // Enter obstacle avoidance stage 1
+                    avoidanceStage = 1;
+                }
+            }
+        }
     }
 
     // Runs before the tank begins fleeing
