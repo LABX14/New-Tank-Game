@@ -36,7 +36,7 @@ public class TankHealth : MonoBehaviour
 
     public void HealDamage(float damage)
     {
-        currentHealth = Mathf.Clamp(currentHealth + damage, 0, maxHealth);
+        currentHealth = Mathf.Min(currentHealth + damage, maxHealth);
         UpdateSlider();
     }
 
@@ -61,5 +61,10 @@ public class TankHealth : MonoBehaviour
         {
             healthImage.color = Color.red;
         }
+    }
+
+    public float GetCurrentHP()
+    {
+        return currentHealth;
     }
 }

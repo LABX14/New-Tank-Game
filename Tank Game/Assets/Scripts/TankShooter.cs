@@ -5,9 +5,15 @@ using UnityEngine;
 public class TankShooter : MonoBehaviour
 {
     //Variables
+    private NoiseMaker noiseMaker;
     private bool canShoot = true;
     private float shotCoolDown = 0;
 
+
+    private void Start()
+    {
+        noiseMaker = GetComponent<NoiseMaker>();
+    }
 
     private void Update()
     {
@@ -43,5 +49,8 @@ public class TankShooter : MonoBehaviour
         bullet.GetComponent<Rigidbody>().velocity = transform.forward * speed * Time.deltaTime;
 
         shotCoolDown = fireRate;
+
+        // Make noise.
+        noiseMaker.volume = Mathf.Max(noiseMaker.volume, noiseMaker.shootVolume);
     }
 }

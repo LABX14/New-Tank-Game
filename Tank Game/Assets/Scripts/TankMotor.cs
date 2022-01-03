@@ -7,13 +7,14 @@ public class TankMotor : MonoBehaviour
 
     // Variables
     private Rigidbody rigidbody;
-    private TankData data;
+    private NoiseMaker noiseMaker;
 
     // Start is called before the first frame update
     void Start()
     {
         // Get components.
         rigidbody = GetComponent<Rigidbody>();
+        noiseMaker = GetComponent<NoiseMaker>();
     }
 
     // Moves the tank forward and backwards.
@@ -30,9 +31,9 @@ public class TankMotor : MonoBehaviour
 
         // Move the tank forwards
         rigidbody.MovePosition(rigidbody.position + (movementVector * Time.deltaTime));
-
-        // Test code to move forward 
-        //characterController.SimpleMove(movement.forward * speed);
+        
+        // Make noise.
+        noiseMaker.volume = Mathf.Max(noiseMaker.volume, noiseMaker.moveVolume);
 
     }
 
@@ -49,6 +50,9 @@ public class TankMotor : MonoBehaviour
 
         // Turn the tank.
         transform.Rotate(rotationVector, Space.Self);
+        
+        // Make noise.
+        noiseMaker.volume = Mathf.Max(noiseMaker.volume, noiseMaker.turnVolume);   
     }
 
     // RotateTowards (Target) - rotates towards the target (if possible).
