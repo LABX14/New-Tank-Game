@@ -23,7 +23,7 @@ public class TankData : MonoBehaviour
 
     public float bulletDamage = 1;
 
-    // Time till next shot can be fired in seconds.
+    // Amount of shots that can be fired per second.
     public float fireRate = 1;
 
     [Header("Health Settings")]

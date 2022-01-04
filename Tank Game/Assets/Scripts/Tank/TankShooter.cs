@@ -48,7 +48,7 @@ public class TankShooter : MonoBehaviour
         // Launch projectile.
         bullet.GetComponent<Rigidbody>().velocity = transform.forward * speed * Time.deltaTime;
 
-        shotCoolDown = fireRate;
+        shotCoolDown = 1/fireRate;
 
         // Make noise.
         noiseMaker.volume = Mathf.Max(noiseMaker.volume, noiseMaker.shootVolume);
