@@ -68,8 +68,6 @@ public class TankMotor : MonoBehaviour
         // Find the Quaternion that looks down that vector
         Quaternion targetRotation = Quaternion.LookRotation(vectorToTarget);
 
-
-        Debug.Log("Rotations: " + targetRotation + ":" + transform.rotation);
         // If that is the direction we are already looking, we don't need to turn!
         if (targetRotation == transform.rotation)
         {

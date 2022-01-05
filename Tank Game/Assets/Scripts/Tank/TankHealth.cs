@@ -55,7 +55,6 @@ public class TankHealth : MonoBehaviour
     private void UpdateSlider()
     {
         healthSlider.value = currentHealth;
-        Debug.Log(currentHealth + " : " + maxHealth * (2f / 3f));
         if(currentHealth > maxHealth * (2f / 3f))
         {
             healthImage.color = Color.green;
@@ -69,7 +68,7 @@ public class TankHealth : MonoBehaviour
             healthImage.color = Color.red;
         }
     }
-
+    
     public float GetCurrentHP()
     {
         return currentHealth;

@@ -60,6 +60,11 @@ public class AIController : MonoBehaviour
         GameManager.instance.enemyTanks.Add(data);
 
         target = GameManager.instance.players[0].transform;
+
+        if((personality == AIPersonality.Patrolling || personality == AIPersonality.Wandering) && waypoints.Length == 0)
+        {
+            //Find Waypoints.
+        }
     }
 
     // Update is called once per frame
@@ -611,6 +616,11 @@ public class AIController : MonoBehaviour
 
         //If we can't, return false
         return false;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.instance.enemyTanks.Remove(data);
     }
 
 }
