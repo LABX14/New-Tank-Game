@@ -119,6 +119,10 @@ public class MapGenerator : MonoBehaviour
                 grid[i, j] = tempRoom;
             }
         }
+
+        // Set player spawnpoints after the map is generated
+        GameManager.instance.SetPlayerSpawnpoints();
+
     }
 
     public int DateToInt(DateTime dateToUse)

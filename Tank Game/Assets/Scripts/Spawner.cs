@@ -8,16 +8,8 @@ public class Spawner : MonoBehaviour
     public GameObject prefabToSpawn;
     public float spawnDelay;
     private float nextSpawnTime;
-    [SerializeField]
-    private Transform[] spawnPoints;
+    public Transform[] spawnPoints;
     private GameObject spawnedObject;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        nextSpawnTime = Time.time + spawnDelay;
-        Debug.Log(spawnPoints.Length);
-    }
 
     // Update is called once per frame
     void Update()
@@ -31,6 +23,7 @@ public class Spawner : MonoBehaviour
 
                 // Spawn it and set the next time
                 spawnedObject = Instantiate(prefabToSpawn, spawnPoints[Random.Range(0,spawnPoints.Length)].position, Quaternion.identity) as GameObject;
+                spawnedObject.transform.parent = transform.parent;
                 nextSpawnTime = Time.time + spawnDelay;
             }
         }

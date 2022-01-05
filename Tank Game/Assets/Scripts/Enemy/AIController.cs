@@ -47,6 +47,7 @@ public class AIController : MonoBehaviour
     public enum AIState { Chase, ChaseAndFire, CheckForFlee, Flee, Default };
     public AIState aiState = AIState.Chase;
     public float restingHealRate;
+    Spawner mySpawner;
 
     // Start is called before the first frame update
     void Start()
@@ -59,17 +60,17 @@ public class AIController : MonoBehaviour
 
         GameManager.instance.enemyTanks.Add(data);
 
-        target = GameManager.instance.players[0].transform;
-
-        if((personality == AIPersonality.Patrolling || personality == AIPersonality.Wandering) && waypoints.Length == 0)
-        {
-            //Find Waypoints.
-        }
+        waypoints = transform.parent.GetComponent<Room>().waypoints;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.instance.players.Count != 0 && target == null)
+        {
+            target = GameManager.instance.players[0].transform;
+        }
+
         switch (personality)
         {
             case AIPersonality.Fleeing:
@@ -97,7 +98,7 @@ public class AIController : MonoBehaviour
                     CheckForFlee();
 
                     // Check for Transitions
-                    if (CanHear(target.gameObject) || CanSee(target.gameObject))
+                    if (target != null && (CanHear(target.gameObject) || CanSee(target.gameObject)))
                     {
                         ChangeState(AIState.Flee);
                     }
@@ -112,7 +113,7 @@ public class AIController : MonoBehaviour
                     DoRest();
 
                     // Check for Transitions
-                    if (CanHear(target.gameObject) || CanSee(target.gameObject))
+                    if (target != null && (CanHear(target.gameObject) || CanSee(target.gameObject)))
                     {
                         ChangeState(AIState.Flee);
                     }
@@ -136,7 +137,7 @@ public class AIController : MonoBehaviour
                         DoPatrol();
                     }
                     // Check for Transitions
-                    if (CanSee(target.gameObject) || CanHear(target.gameObject))
+                    if (target != null && (CanSee(target.gameObject) || CanHear(target.gameObject)))
                     {
                         ChangeState(AIState.Chase);
                     }
@@ -158,7 +159,7 @@ public class AIController : MonoBehaviour
                     {
                         ChangeState(AIState.Default);
                     }
-                    else if (CanSee(target.gameObject))
+                    else if (target != null && CanSee(target.gameObject))
                     {
                         ChangeState(AIState.ChaseAndFire);
                     }
@@ -180,7 +181,7 @@ public class AIController : MonoBehaviour
                     {
                         ChangeState(AIState.Default);
                     }
-                    else if (!CanSee(target.gameObject) && CanHear(target.gameObject))
+                    else if (target != null && !CanSee(target.gameObject) && CanHear(target.gameObject))
                     {
                         ChangeState(AIState.Chase);
                     }
@@ -209,7 +210,7 @@ public class AIController : MonoBehaviour
                     {
                         ChangeState(AIState.CheckForFlee);
                     }
-                    else if (CanSee(target.gameObject))
+                    else if (target != null && CanSee(target.gameObject))
                     {
                         ChangeState(AIState.ChaseAndFire);
                     }
@@ -231,7 +232,7 @@ public class AIController : MonoBehaviour
                     {
                         ChangeState(AIState.CheckForFlee);
                     }
-                    else if (!CanSee(target.gameObject))
+                    else if (target == null || !CanSee(target.gameObject))
                     {
                         ChangeState(AIState.Chase);
                     }
@@ -260,7 +261,7 @@ public class AIController : MonoBehaviour
                     CheckForFlee();
 
                     // Check for Transitions
-                    if (CanHear(target.gameObject) || CanSee(target.gameObject))
+                    if (target != null && (CanHear(target.gameObject) || CanSee(target.gameObject)))
                     {
                         ChangeState(AIState.Flee);
                     }
@@ -279,7 +280,7 @@ public class AIController : MonoBehaviour
                     {
                         ChangeState(AIState.Chase);
                     }
-                    else if (CanHear(target.gameObject) || CanSee(target.gameObject))
+                    else if (target != null && (CanHear(target.gameObject) || CanSee(target.gameObject)))
                     {
                         ChangeState(AIState.Flee);
                     }
@@ -300,7 +301,7 @@ public class AIController : MonoBehaviour
                     }
 
                     // Check for Transitions
-                    if (CanSee(target.gameObject) || CanHear(target.gameObject))
+                    if (target != null && (CanSee(target.gameObject) || CanHear(target.gameObject)))
                     {
                         ChangeState(AIState.ChaseAndFire);
                     }
@@ -319,7 +320,7 @@ public class AIController : MonoBehaviour
                     shooter.Shoot(data.bulletPrefab, data.bulletTransform, data.bulletSpeed, data.fireRate);
 
                     // Check for Transitions
-                    if (!CanSee(target.gameObject) && !CanHear(target.gameObject))
+                    if (target == null || (!CanSee(target.gameObject) && !CanHear(target.gameObject)))
                     {
                         ChangeState(AIState.Default);
                     }
@@ -411,7 +412,7 @@ public class AIController : MonoBehaviour
 
     void DoChase()
     {
-        {
+        if(target == null) { return; }
             motor.RotateTowards(target.position, data.turnSpeed);
             // Check if we can move "data.moveSpeed" units away.
             //    We chose this distance, because that is how far we move in 1 second,
@@ -425,11 +426,12 @@ public class AIController : MonoBehaviour
                 // Enter obstacle avoidance stage 1
                 avoidanceStage = 1;
             }
-        }
     }
 
     void DoFlee()
     {
+        if (target == null) { return; }
+
         // The vector from ai to target is target position minus our position.
         Vector3 vectorToTarget = target.position - transform.position;
 

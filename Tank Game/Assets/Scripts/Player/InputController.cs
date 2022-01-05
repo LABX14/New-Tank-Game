@@ -83,4 +83,10 @@ public class InputController : MonoBehaviour
                 break;
         }
     }
+
+    private void OnDestroy()
+    {
+        GameManager.instance.players.Remove(data);
+    }
+
 }
