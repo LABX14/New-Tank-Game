@@ -20,8 +20,10 @@ public class GameManager : MonoBehaviour
     public List<TankData> players;
 
     public List<Transform> playerSpawnpoints;
+    public List<Transform> powerUpSpawnpoints;
 
     public Spawner playerSpawner;
+    public Spawner powerUpSpawner;
 
     void Awake()
     {
@@ -50,6 +52,7 @@ public class GameManager : MonoBehaviour
         
     }
 
+    // Set the spawn points for the players on the map after the map is generated
     public void SetPlayerSpawnpoints()
     {
         Debug.Log("Setting spawns");
@@ -63,5 +66,21 @@ public class GameManager : MonoBehaviour
         playerSpawner.spawnPoints = playerSpawnpoints.ToArray();
         Debug.Log("Spawning Player");
         playerSpawner.enabled = true;
+    }
+
+    // Set the spawn points for the PowerUp after the map is generated
+    public void SetPowerUpSpawnPoints()
+    {
+        Debug.Log("Pick up Spawned");
+
+        powerUpSpawnpoints.Clear();
+
+        foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("PowerUpSpawnPoint"))
+        {
+            powerUpSpawnpoints.Add(gameObject.transform);
+        }
+        powerUpSpawner.spawnPoints = powerUpSpawnpoints.ToArray();
+        Debug.Log("Spawned Power Up");
+        powerUpSpawner.enabled = true;
     }
 }

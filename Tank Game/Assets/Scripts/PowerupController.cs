@@ -40,6 +40,7 @@ public class PowerupController : MonoBehaviour
         expiredPowerups.Clear();
     }
 
+    // if our power up isn't activated, then activate it
     public void Add (Powerup powerup)
     {
         powerup.OnActivate(data);

@@ -14,6 +14,8 @@ public class Powerup
     public float duration;
     public bool isPermanent;
 
+
+    // This is to change the player's max health 
     public void OnActivate(TankData target)
     {
         target.moveSpeed += speedModifier;
@@ -28,6 +30,7 @@ public class Powerup
         target.fireRate += fireRateModifier;
     }
 
+    // This will change the player's max health back to normal after the power up deactivates
     public void OnDeactivate(TankData target)
     {
         target.moveSpeed -= speedModifier;

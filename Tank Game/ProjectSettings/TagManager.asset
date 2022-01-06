@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Spawnpoints
+  - Waypoints
+  - PowerUpSpawnPoint
   layers:
   - Default
   - TransparentFX

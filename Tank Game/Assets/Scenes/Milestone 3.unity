@@ -218,7 +218,7 @@ MonoBehaviour:
   - {fileID: 1767788381243852842, guid: 7f8940a65d156104d8829351f136f0a4, type: 3}
   - {fileID: 2462470719038299891, guid: 6acc139b24c5e02409b26992acc99436, type: 3}
   mapSeed: 0
-  mapType: 1
+  mapType: 0
 --- !u!4 &316482180
 Transform:
   m_ObjectHideFlags: 0
@@ -594,7 +594,9 @@ MonoBehaviour:
   enemyTanks: []
   players: []
   playerSpawnpoints: []
+  powerUpSpawnpoints: []
   playerSpawner: {fileID: 1153139311}
+  powerUpSpawner: {fileID: 1153139311}
 --- !u!4 &1153139313
 Transform:
   m_ObjectHideFlags: 0

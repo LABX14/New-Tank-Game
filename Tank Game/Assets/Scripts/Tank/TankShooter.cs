@@ -31,7 +31,7 @@ public class TankShooter : MonoBehaviour
     // This controls the shoot function
     public void Shoot(GameObject bulletPrefab, Transform bulletTransform, float speed, float fireRate)
     {
-        Debug.Log("Shooting");
+        
         // Check if the tank is able to shoot.
         if (!canShoot) return;
 
