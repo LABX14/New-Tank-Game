@@ -123,9 +123,6 @@ public class MapGenerator : MonoBehaviour
         // Set player spawnpoints after the map is generated
         GameManager.instance.SetPlayerSpawnpoints();
 
-        // Set power up spawnpoints after the map is generated
-        GameManager.instance.SetPowerUpSpawnPoints();
-
     }
 
     public int DateToInt(DateTime dateToUse)

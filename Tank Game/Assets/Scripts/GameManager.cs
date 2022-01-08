@@ -33,7 +33,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("ERROR: There can only be one GameManager.");
             Destroy(gameObject);
         }
         playerSpawner.enabled = false;
@@ -55,7 +54,6 @@ public class GameManager : MonoBehaviour
     // Set the spawn points for the players on the map after the map is generated
     public void SetPlayerSpawnpoints()
     {
-        Debug.Log("Setting spawns");
 
         playerSpawnpoints.Clear();
 
@@ -64,23 +62,6 @@ public class GameManager : MonoBehaviour
             playerSpawnpoints.Add(gameObject.transform);
         }
         playerSpawner.spawnPoints = playerSpawnpoints.ToArray();
-        Debug.Log("Spawning Player");
         playerSpawner.enabled = true;
-    }
-
-    // Set the spawn points for the PowerUp after the map is generated
-    public void SetPowerUpSpawnPoints()
-    {
-        Debug.Log("Pick up Spawned");
-
-        powerUpSpawnpoints.Clear();
-
-        foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("PowerUpSpawnPoint"))
-        {
-            powerUpSpawnpoints.Add(gameObject.transform);
-        }
-        powerUpSpawner.spawnPoints = powerUpSpawnpoints.ToArray();
-        Debug.Log("Spawned Power Up");
-        powerUpSpawner.enabled = true;
     }
 }
