@@ -5,10 +5,10 @@ using UnityEngine;
 public class InputController : MonoBehaviour
 {
     // Variables
-    
+
     // Input types.
-    private enum InputScheme { WASD, arrowKeys };
-    
+    public enum InputScheme { WASD, arrowKeys };
+
     // The currently selected input type.
     [SerializeField]
     private InputScheme input = InputScheme.WASD;
@@ -22,6 +22,8 @@ public class InputController : MonoBehaviour
     // The Tank Data component.
     private TankData data;
 
+    private int playerIndex;
+
     private void Start()
     {
         // Get components.
@@ -29,7 +31,24 @@ public class InputController : MonoBehaviour
         shooter = GetComponent<TankShooter>();
         data = GetComponent<TankData>();
 
-        GameManager.instance.players.Add(data);
+        if (GameManager.instance.players[0].data == null)
+        {
+            GameManager.instance.players[0].data = data;
+            playerIndex = 0;
+            GameManager.instance.player1Camera.transform.SetParent(transform, false);
+        }
+        else if (GameManager.instance.isMultiplayer && GameManager.instance.players[1].data == null)
+        {
+            GameManager.instance.players[1].data = data;
+            playerIndex = 1;
+            GameManager.instance.player2Camera.transform.SetParent(transform, false);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        GameManager.instance.players[playerIndex].isDead = false;
+        data.score = GameManager.instance.players[playerIndex].score;
     }
 
     // Update is called once per frame
@@ -86,7 +105,18 @@ public class InputController : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.instance.players.Remove(data);
-    }
+        GameManager.instance.players[playerIndex].score = data.score;
+        if (playerIndex == 0)
+        {
+            GameManager.instance.player1Camera.transform.SetParent(GameManager.instance.transform, false);
+            GameManager.instance.player1Camera.enabled = true;
 
+        }
+        else
+        {
+            GameManager.instance.player1Camera.transform.SetParent(GameManager.instance.transform, false);
+            GameManager.instance.player1Camera.enabled = true;
+        }
+        GameManager.instance.players[playerIndex].isDead = true;
+    }
 }

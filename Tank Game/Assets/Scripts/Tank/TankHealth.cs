@@ -44,6 +44,7 @@ public class TankHealth : MonoBehaviour
     {
         maxHealth += maxHealthIncrease;
         currentHealth += maxHealthIncrease;
+        healthSlider.maxValue = maxHealth;
         UpdateSlider();
     }
 

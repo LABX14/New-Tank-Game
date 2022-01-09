@@ -49,6 +49,9 @@ public class AIController : MonoBehaviour
     public float restingHealRate;
     Spawner mySpawner;
 
+    private Transform target1;
+    private Transform target2;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -61,15 +64,52 @@ public class AIController : MonoBehaviour
         GameManager.instance.enemyTanks.Add(data);
 
         waypoints = transform.parent.GetComponent<Room>().waypoints;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.instance.players.Count != 0 && target == null)
+        if(GameManager.instance.players.Count == 0 ) { return; }
+
+        if (target1 == null && GameManager.instance.players[0].data != null)
         {
-            target = GameManager.instance.players[0].transform;
+            target1 = GameManager.instance.players[0].data.transform;
         }
+
+        if (GameManager.instance.isMultiplayer && target2 == null && GameManager.instance.players[1] != null)
+        {
+            target2 = GameManager.instance.players[1].data.transform;
+        }
+
+
+        if (!GameManager.instance.isMultiplayer)
+        {
+            if(target == null)
+            {
+                target = target1;
+            }
+        }
+        else if (target1 != null && target2 != null)
+        {
+            if ((target2.position - transform.position).magnitude < (target1.position - transform.position).magnitude) 
+            {
+                target = target2;
+            }
+            else 
+            { 
+                target = target1; 
+            }
+        }
+        else if (target1 != null)
+        {
+            target = target1;
+        }
+        else if (target2 != null)
+        {
+            target = target2;
+        }
+
 
         switch (personality)
         {

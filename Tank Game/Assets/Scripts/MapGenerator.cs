@@ -49,9 +49,6 @@ public class MapGenerator : MonoBehaviour
 
         // Set our seed
         UnityEngine.Random.InitState(mapSeed);
-
-        // Generate Grid
-        GenerateGrid();
     }
 
     public void GenerateGrid()
@@ -121,7 +118,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         // Set player spawnpoints after the map is generated
-        GameManager.instance.SetPlayerSpawnpoints();
+        GameManager.instance.StartGameplay();
 
     }
 

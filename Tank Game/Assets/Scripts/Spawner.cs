@@ -7,7 +7,7 @@ public class Spawner : MonoBehaviour
     // Variables
     public GameObject prefabToSpawn;
     public float spawnDelay;
-    private float nextSpawnTime;
+    public float nextSpawnTime;
     public Transform[] spawnPoints;
     private GameObject spawnedObject;
 
