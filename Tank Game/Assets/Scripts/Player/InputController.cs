@@ -22,7 +22,7 @@ public class InputController : MonoBehaviour
     // The Tank Data component.
     private TankData data;
 
-    private int playerIndex;
+    public int playerIndex;
 
     private void Start()
     {

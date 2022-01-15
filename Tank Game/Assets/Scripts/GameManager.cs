@@ -24,9 +24,6 @@ public class GameManager : MonoBehaviour
     //public List<Transform> powerUpSpawnpoints;
     //public Spawner powerUpSpawner;
 
-    private MapGenerator mapGenerator;
-
-
     [Header("Player Settings")]
     public List<Player> players;
     public GameObject playerPrefab;
@@ -35,15 +32,20 @@ public class GameManager : MonoBehaviour
     public InputController.InputScheme player2InputScheme;
     public Camera player1Camera;
     public Camera player2Camera;
+    public int playerLives = 3;
 
     [Header("UI Settings")]
     public GameObject player1DeathScreen;
     public Text player1RespawnText;
     public GameObject player2DeathScreen;
     public Text player2RespawnText;
+    public GameObject restartButton;
 
 
     private bool isGameActive = false;
+
+    public MapGenerator.MapType currentMapType;
+    public int currentSeed;
 
 
     void Awake()
@@ -51,6 +53,7 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(this);
         }
         else
         {
@@ -62,12 +65,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mapGenerator = GetComponent<MapGenerator>();
-
         players = new List<Player>();
-
-        // Generate Grid
-        mapGenerator.GenerateGrid();
     }
 
     // Update is called once per frame
@@ -78,7 +76,15 @@ public class GameManager : MonoBehaviour
         if (players[0].isDead) 
         {
             player1DeathScreen.SetActive(true);
-            player1RespawnText.text = "Respawning in : " + (players[0].spawner.nextSpawnTime - Time.time).ToString("0");
+            if (players[0].lives <= 0)
+            {
+                restartButton.SetActive(true);
+                player1RespawnText.text = "Game Over";
+            }
+            else
+            {
+                player1RespawnText.text = "Respawning in : " + (players[0].spawner.nextSpawnTime - Time.time).ToString("0");
+            }
         }
         else if (player1DeathScreen.activeSelf)
         {
@@ -90,7 +96,14 @@ public class GameManager : MonoBehaviour
             if (players[1].isDead)
             {
                 player1DeathScreen.SetActive(true);
-                player2RespawnText.text = "Respawning in : " + (players[0].spawner.nextSpawnTime - Time.time).ToString("0.00");
+                if (players[1].lives <= 0)
+                {
+                    player2RespawnText.text = "Game Over";
+                }
+                else
+                {
+                    player2RespawnText.text = "Respawning in : " + (players[0].spawner.nextSpawnTime - Time.time).ToString("0.00");
+                }
             }
             else if (player2DeathScreen.activeSelf)
             {
@@ -101,6 +114,8 @@ public class GameManager : MonoBehaviour
 
     public void StartGameplay()
     {
+
+
         players.Clear();
 
         players.Add(new Player(gameObject.AddComponent<Spawner>(), playerRespawnTime, playerPrefab, player1InputScheme));
@@ -110,6 +125,11 @@ public class GameManager : MonoBehaviour
         {
             players.Add(new Player(gameObject.AddComponent<Spawner>(), playerRespawnTime, playerPrefab, player2InputScheme));
             SetPlayerSpawnpoints(players[1].spawner);
+        }
+
+        foreach(Player player in players)
+        {
+            player.lives = playerLives;
         }
 
         isGameActive = true;
@@ -127,5 +147,12 @@ public class GameManager : MonoBehaviour
         }
 
         spawner.spawnPoints = playerSpawnpoints.ToArray();
+    }
+
+    public void RestartGame()
+    {
+        isGameActive = false;
+        restartButton.SetActive(false);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 }

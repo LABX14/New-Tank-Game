@@ -31,6 +31,9 @@ public class MapGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mapType = GameManager.instance.currentMapType;
+        mapSeed = GameManager.instance.currentSeed;
+
         //Set the Seed
         switch (mapType)
         {
@@ -49,6 +52,8 @@ public class MapGenerator : MonoBehaviour
 
         // Set our seed
         UnityEngine.Random.InitState(mapSeed);
+
+        GenerateGrid();
     }
 
     public void GenerateGrid()

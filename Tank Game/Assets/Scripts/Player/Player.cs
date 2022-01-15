@@ -10,6 +10,7 @@ public class Player
     public InputController.InputScheme inputScheme;
     public Spawner spawner;
     public bool isDead = false;
+    public int lives;
 
     public Player(Spawner playerSpawner, float respawnTime, GameObject playerPrefab, InputController.InputScheme playerInputScheme)
     {

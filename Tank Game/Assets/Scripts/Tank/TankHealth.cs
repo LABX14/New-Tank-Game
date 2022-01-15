@@ -50,6 +50,10 @@ public class TankHealth : MonoBehaviour
 
     private void Die()
     {
+        if (GetComponent<InputController>())
+        {
+            GameManager.instance.players[GetComponent<InputController>().playerIndex].lives--;
+        }
         Destroy(gameObject);
     }
 
