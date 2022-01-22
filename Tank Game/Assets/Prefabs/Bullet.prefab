@@ -993,5 +993,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d3bbb22ddb56a4499de035dd0270713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletHitSound: {fileID: 8300000, guid: e9bad7f33c01c8f45aea704fcadcf6d0, type: 3}
   despawnTime: 3
   myShooter: {fileID: 0}

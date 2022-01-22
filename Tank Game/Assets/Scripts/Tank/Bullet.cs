@@ -5,6 +5,8 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     // Variables
+    public AudioClip bulletHitSound;
+
 
     // The time till the bullet despawns.
     [SerializeField]
@@ -31,6 +33,8 @@ public class Bullet : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         GameObject otherObject = collision.collider.gameObject;
+
+        AudioSource.PlayClipAtPoint(bulletHitSound, transform.position);
 
         Debug.Log(otherObject + " : " + myShooter.gameObject);
         // Avoid collision with the object that shot the bullet.

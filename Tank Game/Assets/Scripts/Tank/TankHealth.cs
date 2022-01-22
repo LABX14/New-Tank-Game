@@ -25,6 +25,7 @@ public class TankHealth : MonoBehaviour
         UpdateSlider();
     }
 
+    // Upon getting by the bullet, the bullet will take damage which will lower its health
     public void TakeDamage(TankData hitBy)
     {
         currentHealth -= hitBy.bulletDamage;

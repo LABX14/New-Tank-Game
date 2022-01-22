@@ -22,6 +22,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private Text highScoreText;
 
+    private AudioSource buttonPressed;
+
     private void Start()
     {
         mapType.onValueChanged.AddListener(delegate
@@ -109,4 +111,5 @@ public class MainMenu : MonoBehaviour
             GameManager.instance.isMultiplayer = true;
         }
     }
+
 }

@@ -739,7 +739,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d61e77f66ed9e064a8c87b09417e5e0b, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_Volume: 0.15
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -901,10 +901,22 @@ MonoBehaviour:
   player2InputScheme: 1
   player1Camera: {fileID: 1734945560}
   player2Camera: {fileID: 665489206}
+  playerLives: 3
+  player1Name: 
+  player2Name: 
   player1DeathScreen: {fileID: 679779087}
   player1RespawnText: {fileID: 1102648976}
+  player1Lives: {fileID: 0}
+  player1Score: {fileID: 0}
   player2DeathScreen: {fileID: 31978023}
   player2RespawnText: {fileID: 2104558944}
+  player2Lives: {fileID: 0}
+  player2Score: {fileID: 0}
+  restartButton: {fileID: 0}
+  highScoreText: 
+  scores: []
+  currentMapType: 0
+  currentSeed: 0
 --- !u!4 &1153139313
 Transform:
   m_ObjectHideFlags: 0
@@ -929,7 +941,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1153139310}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!1 &1219660862
 GameObject:
   m_ObjectHideFlags: 0
