@@ -156,6 +156,8 @@ MonoBehaviour:
   tankHP: 3
   tankPointValue: 10
   score: 0
+  tankFireSound: {fileID: 8300000, guid: 5f30bf8772eacbf4692552d9688fcaee, type: 3}
+  tankDeathSound: {fileID: 8300000, guid: a20f9372a1a1c48419b896dc516dc42d, type: 3}
 --- !u!114 &8560679447380984496
 MonoBehaviour:
   m_ObjectHideFlags: 0

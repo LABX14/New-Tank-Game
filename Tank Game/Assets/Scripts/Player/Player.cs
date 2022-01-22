@@ -19,4 +19,9 @@ public class Player
         spawner.prefabToSpawn = playerPrefab;
         inputScheme = playerInputScheme;
     }
+
+    public void UpdateScore()
+    {
+        score = data.score;
+    }
 }

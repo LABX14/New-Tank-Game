@@ -36,4 +36,9 @@ public class TankData : MonoBehaviour
 
     public int score = 0;
 
+    [Header("Audio Settings")]
+    public AudioClip tankFireSound;
+    public AudioClip tankDeathSound;
+
+
 }

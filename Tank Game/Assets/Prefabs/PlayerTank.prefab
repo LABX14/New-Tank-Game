@@ -1823,6 +1823,8 @@ MonoBehaviour:
   tankHP: 5
   tankPointValue: 1
   score: 0
+  tankFireSound: {fileID: 8300000, guid: 5f30bf8772eacbf4692552d9688fcaee, type: 3}
+  tankDeathSound: {fileID: 8300000, guid: a20f9372a1a1c48419b896dc516dc42d, type: 3}
 --- !u!114 &7039505201208053064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1836,6 +1838,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: 0
+  playerIndex: 0
 --- !u!114 &2166206255878556807
 MonoBehaviour:
   m_ObjectHideFlags: 0

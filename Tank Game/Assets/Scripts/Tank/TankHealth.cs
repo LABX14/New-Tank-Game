@@ -10,12 +10,14 @@ public class TankHealth : MonoBehaviour
     private float maxHealth;
     private Image healthImage;
 
-    private Slider healthSlider; 
+    private Slider healthSlider;
+    private TankData data;
   
     // Start is called before the first frame update
     void Start()
     {
-        maxHealth = GetComponent<TankData>().tankHP;
+        data = GetComponent<TankData>();
+        maxHealth = data.tankHP;
         currentHealth = maxHealth;
         healthSlider = GetComponentInChildren<Slider>();
         healthSlider.maxValue = maxHealth;
@@ -50,10 +52,16 @@ public class TankHealth : MonoBehaviour
 
     private void Die()
     {
+
+        AudioSource.PlayClipAtPoint(data.tankDeathSound, transform.position);
+        
         if (GetComponent<InputController>())
         {
-            GameManager.instance.players[GetComponent<InputController>().playerIndex].lives--;
+            int playerIndex = GetComponent<InputController>().playerIndex;
+            GameManager.instance.players[playerIndex].UpdateScore();
+            GameManager.instance.players[playerIndex].lives--;
         }
+
         Destroy(gameObject);
     }
 
