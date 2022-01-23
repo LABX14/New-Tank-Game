@@ -37,12 +37,14 @@ public class TankHealth : MonoBehaviour
         }
     }
 
+    // The player's health value will restore the amount of health the healing value was set too
     public void HealDamage(float damage)
     {
         currentHealth = Mathf.Min(currentHealth + damage, maxHealth);
         UpdateSlider();
     }
 
+    // This will set the max health of the player to a set higher value
     public void IncreaseMaxHelth(float maxHealthIncrease)
     {
         maxHealth += maxHealthIncrease;
@@ -51,11 +53,14 @@ public class TankHealth : MonoBehaviour
         UpdateSlider();
     }
 
+
+    // When the player dies,
     private void Die()
     {
-
+        //play the audio clip at the position where that tank died
         AudioSource.PlayClipAtPoint(data.tankDeathSound, transform.position, GameManager.instance.sfxVolume);
         
+        // Update the score and drop the number of lives 
         if (GetComponent<InputController>())
         {
             int playerIndex = GetComponent<InputController>().playerIndex;
@@ -66,6 +71,7 @@ public class TankHealth : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // Update the slider if the player takes damage
     private void UpdateSlider()
     {
         healthSlider.value = currentHealth;
@@ -83,6 +89,7 @@ public class TankHealth : MonoBehaviour
         }
     }
     
+    // Getting the player's current health
     public float GetCurrentHP()
     {
         return currentHealth;

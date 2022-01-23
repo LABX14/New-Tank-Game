@@ -119,15 +119,21 @@ public class GameManager : MonoBehaviour
                 player1RespawnText.text = "Respawning in : " + (players[0].spawner.nextSpawnTime - Time.time).ToString("0");
             }
         }
+
+        // If player one's death screen is active, 
         else if (player1DeathScreen.activeSelf)
         {
+            // then set death screen to false
             player1DeathScreen.SetActive(false);
         }
+
+        // else show the screen that will display the player's score
         else
         {
             player1Score.text = "Score: " + players[0].data.score;
         }
 
+        // If in Multiplayer game mode and if the player 1 is dead, the player 2 death screen will be set to active
         if (isMultiplayer)
         {
             if (players[1].isDead)
@@ -144,10 +150,13 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
+                    // Else the player 2 lives are being displayed and show the respawn text with countdown
                     player2Lives.text = "Lives: " + players[1].lives;
                     player2RespawnText.text = "Respawning in : " + (players[1].spawner.nextSpawnTime - Time.time).ToString("0");
                 }
             }
+
+            // Display the player 2 score if the player 2 death screen is showing 
             else if (player2DeathScreen.activeSelf)
             {
                 player2DeathScreen.SetActive(false);
@@ -159,16 +168,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // At the start of the game, clear all the players then add in a new player to the scene
     public void StartGameplay()
     {
         players.Clear();
 
+        // give that player their respawn time, the character they will be playing as, and that player's controls
         players.Add(new Player(gameObject.AddComponent<Spawner>(), playerRespawnTime, playerPrefab, player1InputScheme));
         SetPlayerSpawnpoints(players[0].spawner);
         player1Lives.text = "Lives: " + playerLives;
 
         if (isMultiplayer)
         {
+            // Give player their respawn time, the character they will be playing as, and their different controls if game mode is Multiplayer
             player2Canvas.SetActive(true);
             players.Add(new Player(gameObject.AddComponent<Spawner>(), playerRespawnTime, playerPrefab, player2InputScheme));
             SetPlayerSpawnpoints(players[1].spawner);
@@ -203,12 +215,16 @@ public class GameManager : MonoBehaviour
         spawner.spawnPoints = playerSpawnpoints.ToArray();
     }
 
+    // This will restart the game
     public void RestartGame()
     {
+        // the game is no longer active 
         isGameActive = false;
+        // the restart button will have spawned in
         restartButton.SetActive(false);
-        
+        // destroy the players
         Destroy(players[0].spawner);
+        // in Multiplayer, destroy player 2
         if (isMultiplayer)
         {
             Destroy(players[1].spawner);
@@ -272,6 +288,7 @@ public class GameManager : MonoBehaviour
         SaveScores();
     }
 
+    // Set the background music volume from the game scene to the value of the slider from main menu
     private void OnLevelWasLoaded(int level)
     {
         bgmAudioSource = GameObject.FindGameObjectWithTag("Background Music").GetComponent<AudioSource>();

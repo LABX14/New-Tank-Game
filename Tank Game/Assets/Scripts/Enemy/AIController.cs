@@ -70,6 +70,7 @@ public class AIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // This gets the 
         if(GameManager.instance.players.Count == 0 ) { return; }
 
         if (target1 == null && GameManager.instance.players[0].data != null)

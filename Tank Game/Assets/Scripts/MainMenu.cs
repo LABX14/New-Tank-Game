@@ -24,8 +24,10 @@ public class MainMenu : MonoBehaviour
 
     private AudioSource buttonPressed;
 
+    
     private void Start()
     {
+        // This spawns in a listener depending on how many players spawn in
         mapType.onValueChanged.AddListener(delegate
         {
             MapTypeDropdownValueChanged();
@@ -35,8 +37,10 @@ public class MainMenu : MonoBehaviour
             PlayersDropdownValueChanged();
         });
 
+        // This will load the high score for the game on the screen
         GameManager.instance.LoadScores();
 
+        // This will display high score from the game
         highScoreText.text = GameManager.instance.highScoreText;
     }
 
@@ -98,6 +102,7 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    // This is checking how many players are getting spawned in
     void PlayersDropdownValueChanged()
     {
         if(players.value == 0)

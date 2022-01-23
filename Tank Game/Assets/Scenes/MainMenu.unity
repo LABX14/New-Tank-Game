@@ -3092,7 +3092,7 @@ MonoBehaviour:
   player2InputScheme: 1
   player1Camera: {fileID: 901430994}
   player2Camera: {fileID: 335698465}
-  playerLives: 3
+  playerLives: 1
   player1Name: 
   player2Name: 
   player1DeathScreen: {fileID: 1273189526}
@@ -3106,7 +3106,13 @@ MonoBehaviour:
   player2Score: {fileID: 1650626631}
   restartButton: {fileID: 1079341969}
   highScoreText: 
-  scores: []
+  scores:
+  - score: 0
+    name: 
+  - score: 0
+    name: 
+  - score: 0
+    name: 
   sfxVolume: 0
   bgmVolume: 0
   bgmAudioSource: {fileID: 0}

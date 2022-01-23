@@ -31,6 +31,7 @@ public class InputController : MonoBehaviour
         shooter = GetComponent<TankShooter>();
         data = GetComponent<TankData>();
 
+        // Give input scheme to the players when they spawn in based on which game mode they will do 
         if (GameManager.instance.players[0].data == null)
         {
             GameManager.instance.players[0].data = data;
@@ -58,6 +59,7 @@ public class InputController : MonoBehaviour
     {
         switch (input)
         {
+            // These are the directions that the player will move when these arrow keys are pressed 
             case InputScheme.arrowKeys:
                 if (Input.GetKey(KeyCode.UpArrow))
                 {
@@ -80,6 +82,8 @@ public class InputController : MonoBehaviour
                     shooter.Shoot(data.bulletPrefab, data.bulletTransform, data.bulletSpeed, data.fireRate);
                 }
                 break;
+
+                // These are how the players wwill move the certain keys are pressed
             case InputScheme.WASD:
                 if (Input.GetKey(KeyCode.W))
                 {
@@ -105,6 +109,7 @@ public class InputController : MonoBehaviour
         }
     }
 
+    // When it is destroyed, set it the player the player is alive
     private void OnDestroy()
     {
         GameManager.instance.players[playerIndex].score = data.score;

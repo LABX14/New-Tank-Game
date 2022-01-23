@@ -55,6 +55,7 @@ public class SoundManager : MonoBehaviour
         GameManager.instance.sfxVolume = sfxVolumeSlider.value;
     }
 
+    // This will save the current settings for the game after you quit
     private void OnApplicationQuit()
     {
         Save();

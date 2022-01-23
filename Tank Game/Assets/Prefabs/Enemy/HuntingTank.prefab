@@ -158,7 +158,6 @@ MonoBehaviour:
   score: 0
   tankFireSound: {fileID: 8300000, guid: 5f30bf8772eacbf4692552d9688fcaee, type: 3}
   tankDeathSound: {fileID: 8300000, guid: a20f9372a1a1c48419b896dc516dc42d, type: 3}
-  bulletHitSound: {fileID: 8300000, guid: e9bad7f33c01c8f45aea704fcadcf6d0, type: 3}
 --- !u!114 &7728907031512920095
 MonoBehaviour:
   m_ObjectHideFlags: 0
