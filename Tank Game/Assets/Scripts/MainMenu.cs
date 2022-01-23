@@ -102,7 +102,7 @@ public class MainMenu : MonoBehaviour
     {
         if(players.value == 0)
         {
-            player1Name.gameObject.SetActive(false);
+            player2Name.gameObject.SetActive(false);
             GameManager.instance.isMultiplayer = false;
         }
         if (players.value == 1)

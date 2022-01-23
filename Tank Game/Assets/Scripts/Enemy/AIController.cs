@@ -77,7 +77,7 @@ public class AIController : MonoBehaviour
             target1 = GameManager.instance.players[0].data.transform;
         }
 
-        if (GameManager.instance.isMultiplayer && target2 == null && GameManager.instance.players[1] != null)
+        if (GameManager.instance.isMultiplayer && target2 == null && GameManager.instance.players[1].data != null)
         {
             target2 = GameManager.instance.players[1].data.transform;
         }

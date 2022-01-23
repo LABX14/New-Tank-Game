@@ -54,7 +54,7 @@ public class TankHealth : MonoBehaviour
     private void Die()
     {
 
-        AudioSource.PlayClipAtPoint(data.tankDeathSound, transform.position);
+        AudioSource.PlayClipAtPoint(data.tankDeathSound, transform.position, GameManager.instance.sfxVolume);
         
         if (GetComponent<InputController>())
         {

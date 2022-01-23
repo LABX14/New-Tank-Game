@@ -8,11 +8,13 @@ public class TankShooter : MonoBehaviour
     private NoiseMaker noiseMaker;
     private bool canShoot = true;
     private float shotCoolDown = 0;
+    private TankData data;
 
 
     private void Start()
     {
         noiseMaker = GetComponent<NoiseMaker>();
+        data = GetComponent<TankData>();
     }
 
     private void Update()
@@ -30,10 +32,11 @@ public class TankShooter : MonoBehaviour
 
     // This controls the shoot function
     public void Shoot(GameObject bulletPrefab, Transform bulletTransform, float speed, float fireRate)
-    {
-        
+    {   
         // Check if the tank is able to shoot.
         if (!canShoot) return;
+
+        AudioSource.PlayClipAtPoint(data.tankFireSound, transform.position, GameManager.instance.sfxVolume);
 
         // The projectile we are shooting.
         GameObject bullet;

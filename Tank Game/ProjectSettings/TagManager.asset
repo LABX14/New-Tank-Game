@@ -7,6 +7,7 @@ TagManager:
   - Spawnpoints
   - Waypoints
   - PowerUpSpawnPoint
+  - Background Music
   layers:
   - Default
   - TransparentFX

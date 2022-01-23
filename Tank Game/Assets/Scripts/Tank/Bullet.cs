@@ -34,7 +34,7 @@ public class Bullet : MonoBehaviour
     {
         GameObject otherObject = collision.collider.gameObject;
 
-        AudioSource.PlayClipAtPoint(bulletHitSound, transform.position);
+        AudioSource.PlayClipAtPoint(bulletHitSound, transform.position, GameManager.instance.sfxVolume);
 
         Debug.Log(otherObject + " : " + myShooter.gameObject);
         // Avoid collision with the object that shot the bullet.

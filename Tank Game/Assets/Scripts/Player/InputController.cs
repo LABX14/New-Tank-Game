@@ -47,6 +47,8 @@ public class InputController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        input = GameManager.instance.players[playerIndex].inputScheme;
         GameManager.instance.players[playerIndex].isDead = false;
         data.score = GameManager.instance.players[playerIndex].score;
     }
@@ -114,8 +116,8 @@ public class InputController : MonoBehaviour
         }
         else
         {
-            GameManager.instance.player1Camera.transform.SetParent(GameManager.instance.transform, false);
-            GameManager.instance.player1Camera.enabled = true;
+            GameManager.instance.player2Camera.transform.SetParent(GameManager.instance.transform, false);
+            GameManager.instance.player2Camera.enabled = true;
         }
         GameManager.instance.players[playerIndex].isDead = true;
     }

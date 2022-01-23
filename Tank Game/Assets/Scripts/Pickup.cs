@@ -25,7 +25,9 @@ public class Pickup : MonoBehaviour
             // Play Feedback (if it is set)
             if (feedback != null)
             {
-                AudioSource.PlayClipAtPoint(feedback, transform.position, 1.0f);
+                Debug.Log("Player Powerup Audio");
+                AudioSource.PlayClipAtPoint(feedback, transform.position, GameManager.instance.sfxVolume*20);
+                Debug.Log(GameManager.instance.sfxVolume);
             }
 
             // Destroy this pickup
